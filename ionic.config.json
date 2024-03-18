@@ -1,0 +1,7 @@
+{
+  "name": "wanderWord",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

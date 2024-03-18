@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Elemento de entrada de arquivo para fazer o upload do arquivo PDF -->
+  <input type="file" (change)="handleUpload($event)" accept=".pdf,.epub,.mobi">
+
+
+
+  <!-- Botão para fazer o upload do arquivo PDF -->
+  <ion-button expand="block" (click)="uploadPDF()">Upload PDF</ion-button>
+</ion-content>
