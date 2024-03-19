@@ -17,5 +17,12 @@
 
 
   <!-- Botão para fazer o upload do arquivo PDF -->
-  <ion-button expand="block" (click)="uploadPDF()">Upload PDF</ion-button>
+  <ion-button expand="block" (click)="uploadfile()">Upload PDF</ion-button>
+  
+  <div *ngIf="percentage | async as progress">
+    <div>{{ progress }}%</div>
+    <ion-progress-bar [value]="progress / 100"></ion-progress-bar>
+  </div>
+  
+  
 </ion-content>
