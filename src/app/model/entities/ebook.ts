@@ -3,13 +3,12 @@ export default class Ebook {
   title: string;
   author: string;
   description: string;
-  coverImage: string; // Adicionar a propriedade coverImage
+  coverImage: string;
   fileType: FileType;
   file: File;
   pageCount: number;
   favorite: boolean;
   progress: number;
-  ownerId: number;
   collectionId?: number;
   filePath: string;
   fileUrl: string;
@@ -40,7 +39,6 @@ export default class Ebook {
     this.pageCount = pageCount;
     this.favorite = favorite;
     this.progress = progress;
-    this.ownerId = ownerId;
     this.filePath = filePath;
     this.fileUrl = fileUrl;
     this.collectionId = collectionId;

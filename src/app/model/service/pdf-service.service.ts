@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class PdfServiceService {
     );
   }
 
-  extractCover(uploadedFileUrl: string): Observable<string> {
+  extractCover(uploadedFileUrl: string): Observable<Blob> {
     const payload = { url: uploadedFileUrl, pages: '0' };
     const headers = new HttpHeaders({
       'x-api-key': this.apiKey,
@@ -36,7 +36,18 @@ export class PdfServiceService {
     });
 
     return this.http.post<any>(this.extractCoverUrl, payload, { headers }).pipe(
-      map(response => response?.urls?.[0] || '')
+      switchMap(response => {
+        const coverImageUrl = response?.urls?.[0] || '';
+        return this.downloadCoverImage(coverImageUrl);
+      })
     );
+}
+
+  downloadCoverImage(coverImageUrl: string): Observable<Blob> {
+    const headers = new HttpHeaders({
+      'x-api-key': this.apiKey
+    });
+
+    return this.http.get(coverImageUrl, { headers, responseType: 'blob' });
   }
 }

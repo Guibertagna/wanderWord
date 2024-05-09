@@ -1,0 +1,10 @@
+ion-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  img {
+    max-width: 100%; /* Garante que a imagem não exceda a largura do contêiner pai */
+    height: auto; /* Mantém a proporção da imagem */
+  }
+  

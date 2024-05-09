@@ -10,4 +10,10 @@
         <ion-title size="large">busca</ion-title>
       </ion-toolbar>
     </ion-header>
+    <ion-button>
+      <input type="file" (change)="handleUpload($event)" accept=".pdf,.epub,.mobi">
+    </ion-button>
+    <ion-button expand="block" (click)="uploadEbook()">Upload PDF</ion-button>
+    <div>{{ percentage }}%</div>
+    <ion-progress-bar [value]="percentage / 100"></ion-progress-bar>
   </ion-content>

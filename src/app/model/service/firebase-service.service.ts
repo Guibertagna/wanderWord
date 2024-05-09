@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { Observable, throwError } from 'rxjs';
-
+import { finalize, catchError } from 'rxjs/operators';
 import Ebook, { FileType } from '../entities/ebook';
 import { PdfServiceService } from './pdf-service.service';
 
@@ -33,7 +33,7 @@ export class FirebaseService {
 
     const filePath = `ebooks/${new Date().getTime()}_${ebook.file.name}`;
     const fileRef = this.storage.ref(filePath);
-    const task = this.storage.upload(filePath, ebook.file);
+    const task: AngularFireUploadTask = this.storage.upload(filePath, ebook.file);
 
     const uploadObservable = new Observable<number>((observer) => {
       task.percentageChanges().subscribe(
@@ -54,13 +54,22 @@ export class FirebaseService {
                     ebook.author = pdfInfo.author || 'Unknown';
                     ebook.filePath = filePath;
                     ebook.fileUrl = url;
-                    this.saveCoverAndEbookToFirestore(ebook).subscribe(
+                    // Agora vamos salvar a imagem da capa antes de salvar o eBook
+                    this.saveCoverImage(ebook).subscribe(
                       () => {
-                        console.log('E-book e capa salvos com sucesso');
-                        observer.complete();
+                        this.saveEbookToFirestore(ebook).subscribe(
+                          () => {
+                            console.log('E-book e capa salvos com sucesso');
+                            observer.complete();
+                          },
+                          (error) => {
+                            console.error('Erro ao salvar o e-book no Firestore:', error);
+                            observer.error(error);
+                          }
+                        );
                       },
                       (error) => {
-                        console.error('Erro ao salvar o e-book e a capa no Firestore:', error);
+                        console.error('Erro ao salvar a imagem da capa:', error);
                         observer.error(error);
                       }
                     );
@@ -87,30 +96,60 @@ export class FirebaseService {
     return uploadObservable;
   }
 
-  private saveCoverAndEbookToFirestore(ebook: Ebook): Observable<void> {
+  private saveCoverImage(ebook: Ebook): Observable<void> {
     return new Observable<void>((observer) => {
       this.pdfService.extractCover(ebook.fileUrl).subscribe(
-        (coverUrl: string) => {
-          this.angularFirestore.collection(this.ebooksCollectionPath).add({
-            author: ebook.author,
-            pageCount: ebook.pageCount,
-            filePath: ebook.filePath,
-            fileUrl: ebook.fileUrl,
-            title: ebook.title,
-            coverImage: coverUrl
-          }).then(() => {
-            observer.next();
-            observer.complete();
-          }).catch((error) => {
-            console.error('Erro ao salvar o eBook no Firestore:', error);
-            observer.error(error);
-          });
+        (coverImageBlob: Blob) => {
+          const coverFilePath = `covers/${new Date().getTime()}_cover.png`;
+          const coverRef = this.storage.ref(coverFilePath);
+          const uploadTask: AngularFireUploadTask = this.storage.upload(coverFilePath, coverImageBlob);
+
+          uploadTask.snapshotChanges().pipe(
+            finalize(() => {
+              coverRef.getDownloadURL().subscribe(
+                (coverImage: string) => {
+                  // Atualize o eBook para incluir o link da imagem da capa
+                  ebook.coverImage = coverImage;
+                  observer.next();
+                  observer.complete();
+                },
+                (error) => {
+                  console.error('Erro ao obter o URL da imagem da capa:', error);
+                  observer.error(error);
+                }
+              );
+            }),
+            catchError((error) => {
+              console.error('Erro durante o upload da imagem da capa:', error);
+              observer.error(error);
+              return throwError(error);
+            })
+          ).subscribe();
         },
         (error) => {
-          console.error('Erro ao extrair a capa do eBook:', error);
+          console.error('Erro ao extrair a imagem da capa:', error);
           observer.error(error);
         }
       );
+    });
+  }
+
+  private saveEbookToFirestore(ebook: Ebook): Observable<void> {
+    return new Observable<void>((observer) => {
+      this.angularFirestore.collection(this.ebooksCollectionPath).add({
+        author: ebook.author,
+        pageCount: ebook.pageCount,
+        filePath: ebook.filePath,
+        fileUrl: ebook.fileUrl,
+        title: ebook.title,
+        coverImage: ebook.coverImage // Salva o link da imagem da capa no Firestore
+      }).then(() => {
+        observer.next();
+        observer.complete();
+      }).catch((error) => {
+        console.error('Erro ao salvar o eBook no Firestore:', error);
+        observer.error(error);
+      });
     });
   }
 

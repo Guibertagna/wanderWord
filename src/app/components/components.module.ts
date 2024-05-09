@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { EbookshomeComponent } from './ebookshome/ebookshome.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -10,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [EbookshomeComponent],
   imports: [
-    CommonModule, IonicModule, HttpClientModule
+    CommonModule, IonicModule, HttpClientModule, FormsModule
   ],
   exports: [EbookshomeComponent]
 })

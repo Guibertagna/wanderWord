@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>CADASTRO</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/signin"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <form [formGroup]="formSingup" (ngSubmit)="submitForm()">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="formSingup.get('email')?.touched && formSingup.get('email')?.errors?.['required']">
+            Email obrigatório
+          </ion-text>
+          <ion-text color="danger" *ngIf="formSingup.get('email')?.dirty && formSingup.get('email')?.errors?.['email']">
+            Email em formato inválido
+          </ion-text>
+        </form>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <form [formGroup]="formSingup" (ngSubmit)="submitForm()">
+          <ion-item>
+            <ion-label position="floating">Senha</ion-label>
+            <ion-input type="password" formControlName="senha"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="formSingup.get('senha')?.touched && formSingup.get('senha')?.errors?.['required']">
+            Senha obrigatória
+          </ion-text>
+          <ion-text color="danger" *ngIf="formSingup.get('senha')?.dirty && formSingup.get('senha')?.errors?.['minlength']">
+            Senha precisa ter pelo menos 6 caracteres
+          </ion-text>
+        </form>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <form [formGroup]="formSingup" (ngSubmit)="submitForm()">
+          <ion-item>
+            <ion-label position="floating">Confirme sua senha</ion-label>
+            <ion-input type="password" formControlName="confsenha"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="formSingup.get('confsenha')?.touched && formSingup.get('confsenha')?.errors?.['required']">
+            Confirmação de senha obrigatória
+          </ion-text>
+          <ion-text color="danger" *ngIf="formSingup.get('senha')?.dirty && formSingup.get('senha')?.errors?.['minlength']">
+            Senha precisa ter pelo menos 6 caracteres
+          </ion-text>
+          <ion-text color="danger" *ngIf="formSingup.get('confsenha')?.dirty && (this.formSingup.get('senha')?.value != this.formSingup.get('confsenha')?.value)">
+            As senhas precisam ser iguais
+          </ion-text>
+        </form>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-button expand="full" color="success" type="submit">Cadastrar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

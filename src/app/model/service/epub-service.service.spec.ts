@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EpubserviceService } from './epubservice.service';
+import { EpubServiceService } from './epub-service.service';
 
-describe('EpubserviceService', () => {
-  let service: EpubserviceService;
+describe('EpubServiceService', () => {
+  let service: EpubServiceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EpubserviceService);
+    service = TestBed.inject(EpubServiceService);
   });
 
   it('should be created', () => {
