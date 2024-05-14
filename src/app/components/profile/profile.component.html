@@ -1,0 +1,16 @@
+<ion-content>
+  <ion-card *ngIf="user">
+    <ion-card-content>
+      <p>Email: {{ user.email }}</p>
+      <p>UID: {{ user.uid }}</p>
+      <!-- Adicione outras informações do perfil que deseja exibir -->
+
+      <!-- Botão de logout -->
+      <ion-button (click)="logout()" expand="block" color="danger">Logout</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ng-container *ngIf="!user">
+    <p>Nenhum usuário logado.</p>
+  </ng-container>
+</ion-content>

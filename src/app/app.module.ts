@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { FirebaseService } from './model/service/firebase-service.service';
 import { ComponentsModule } from './components/components.module';
 import { FormsModule } from '@angular/forms';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [AppComponent, ],
@@ -20,7 +21,8 @@ import { FormsModule } from '@angular/forms';
     AngularFireModule.initializeApp(environment.firebaseConfig),// Inicialize o AngularFireModule com a configuração do ambiente
     AngularFirestoreModule,
     ComponentsModule,
-    FormsModule
+    FormsModule,
+    PdfViewerModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

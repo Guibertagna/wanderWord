@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'singup',
     loadChildren: () => import('./pages/user/singup/singup.module').then( m => m.SingupPageModule)
   },
+  {
+    path: 'pdfviewer',
+    loadChildren: () => import('./pages/pdfviewer/pdfviewer.module').then( m => m.PdfviewerPageModule)
+  },
 ];
 
 @NgModule({

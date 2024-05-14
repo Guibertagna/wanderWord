@@ -35,7 +35,7 @@ export class AuthService {
   public signOut() {
     return this.fireAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['singnin']);
+      this.router.navigate(['login']);
     });
   }
 
@@ -53,11 +53,11 @@ export class AuthService {
     return user !== null ? true : false;
   }
 
-  signInWithGoogle() {
+  public singInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    const auth = getAuth(); // Obtenha o objeto Auth correto usando getAuth()
-    return signInWithPopup(auth, provider); // Use o objeto Auth para fazer login com o provedor
+    const auth = getAuth();
+    return signInWithPopup(auth, provider, browserPopupRedirectResolver);
   }
-
+  
 }
 
