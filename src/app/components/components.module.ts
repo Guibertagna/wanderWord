@@ -5,15 +5,19 @@ import { EbookshomeComponent } from './ebookshome/ebookshome.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
-
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { EditbookComponent } from './editbook/editbook.component';
 
 @NgModule({
-  declarations: [EbookshomeComponent, ProfileComponent, PdfViewerComponent],
+  declarations: [EbookshomeComponent, ProfileComponent, PdfViewerComponent, EditbookComponent],
   imports: [
-    CommonModule, IonicModule, HttpClientModule, FormsModule, PdfViewerModule
+    CommonModule,
+    IonicModule,
+    HttpClientModule,
+    FormsModule,
+    NgxExtendedPdfViewerModule,
   ],
-  exports: [EbookshomeComponent, ProfileComponent, PdfViewerComponent]
+  exports: [EbookshomeComponent, ProfileComponent, PdfViewerComponent, EditbookComponent],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

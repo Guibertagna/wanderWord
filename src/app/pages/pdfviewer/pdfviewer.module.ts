@@ -8,6 +8,8 @@ import { PdfviewerPageRoutingModule } from './pdfviewer-routing.module';
 
 import { PdfviewerPage } from './pdfviewer.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { PdfViewerComponent } from 'src/app/components/pdf-viewer/pdf-viewer.component';
 
 @NgModule({
   imports: [
@@ -15,8 +17,10 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    PdfviewerPageRoutingModule
+    PdfviewerPageRoutingModule,
+    NgxExtendedPdfViewerModule,
   ],
-  declarations: [PdfviewerPage]
+  declarations: [PdfviewerPage],
+  exports: [PdfViewerComponent]
 })
 export class PdfviewerPageModule {}

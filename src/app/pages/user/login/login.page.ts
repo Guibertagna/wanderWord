@@ -15,7 +15,6 @@ export class LoginPage implements OnInit {
     this.formLogar = new FormGroup({
       email: new FormControl(''),
       senha: new FormControl(''),
-      Confsenha: new FormControl(''),
     });
   }
 
@@ -49,16 +48,14 @@ export class LoginPage implements OnInit {
 
   logarComGoogle(): void {
     this.authService.singInWithGoogle().then((res) => {
-      this.router.navigate(['tabs/home'])
+      this.router.navigate(['tabs/home']);
     }).catch((error) => {
       console.log(error.message);
     });
-  
   }
 
-
-
   irParaSingUp() {
-    this.router.navigate(['signup']);
+    console.log('to indo')
+    this.router.navigate(['/singup']);
   }
 }

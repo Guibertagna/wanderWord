@@ -1,0 +1,29 @@
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Editar informações do livro</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content class="ion-text-center">
+      <ion-item lines="none">
+        <img [src]="ebook.coverImage" alt="Capa do eBook" >
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="stacked">Título do Livro</ion-label>
+        <ion-input type="text" [(ngModel)]="ebook.title"></ion-input>
+      </ion-item>
+  
+      <ion-item lines="none">
+        <ion-label position="stacked">Autor</ion-label>
+        <ion-input type="text" [(ngModel)]="ebook.author"></ion-input>
+      </ion-item>
+  
+      <ion-item lines="none">
+        <ion-label position="stacked">Número de Páginas</ion-label>
+        <ion-input type="number" [(ngModel)]="ebook.pageCount"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-button expand="block" color="primary" (click)="saveChanges()">Salvar Alterações</ion-button>
+</ion-content>

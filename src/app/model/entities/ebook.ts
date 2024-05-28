@@ -1,5 +1,5 @@
 export default class Ebook {
-  id: number;
+  docId: string;
   title: string;
   author: string;
   description: string;
@@ -12,9 +12,10 @@ export default class Ebook {
   collectionId?: number;
   filePath: string;
   fileUrl: string;
+  ownerId : string;
 
   constructor(
-    id: number,
+    docId: string,
     title: string,
     author: string,
     description: string,
@@ -24,12 +25,12 @@ export default class Ebook {
     pageCount: number,
     favorite: boolean,
     progress: number,
-    ownerId: number,
+    ownerId: string,
     filePath: string,
     fileUrl: string,
     collectionId?: number
   ) {
-    this.id = id;
+    this.docId = docId
     this.title = title;
     this.author = author;
     this.description = description;
@@ -42,6 +43,7 @@ export default class Ebook {
     this.filePath = filePath;
     this.fileUrl = fileUrl;
     this.collectionId = collectionId;
+    this.ownerId = ownerId;
   }
 }
 export enum FileType {

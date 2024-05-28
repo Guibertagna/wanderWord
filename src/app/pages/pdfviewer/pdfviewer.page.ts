@@ -7,15 +7,23 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./pdfviewer.page.scss'],
 })
 export class PdfviewerPage implements OnInit {
-  selectedPdfUrl: string = ''; // Adicionando a propriedade selectedPdfUrl
+  selectedPdfUrl: string = '';
+  documentId: string = ''; // Adicionando a propriedade documentId
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      if (params['pdfUrl']) {
-        this.selectedPdfUrl = params['pdfUrl']; // Obtém a URL do PDF dos parâmetros de consulta da URL
+      this.selectedPdfUrl = params['pdfUrl'];
+
+      if (!this.selectedPdfUrl) {
+        console.error('URL do PDF não fornecida nos parâmetros da rota.');
+      } else {
+        console.log('Carregando PDF a partir da URL:', this.selectedPdfUrl);
       }
+     
     });
   }
+
+ 
 }

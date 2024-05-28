@@ -7,6 +7,6 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <app-pdf-viewer [pdfUrl]="selectedPdfUrl"></app-pdf-viewer>
+<ion-content [fullscreen]="true" scroll-y="false"> <!-- Remova o scroll vertical -->
+  <app-pdf-viewer [selectedPdfUrl]="selectedPdfUrl" [documentId]="documentId"></app-pdf-viewer>
 </ion-content>

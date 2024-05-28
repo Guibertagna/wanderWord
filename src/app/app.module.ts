@@ -10,10 +10,11 @@ import { environment } from 'src/environments/environment';
 import { FirebaseService } from './model/service/firebase-service.service';
 import { ComponentsModule } from './components/components.module';
 import { FormsModule } from '@angular/forms';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+
 
 @NgModule({
-  declarations: [AppComponent, ],
+  declarations: [AppComponent,],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -22,7 +23,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     AngularFirestoreModule,
     ComponentsModule,
     FormsModule,
-    PdfViewerModule
+    NgxExtendedPdfViewerModule,
+   
+   
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

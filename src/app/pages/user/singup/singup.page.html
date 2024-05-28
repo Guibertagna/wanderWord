@@ -1,51 +1,64 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>CADASTRO</ion-title>
+    <ion-title>Cadastro</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/signin"></ion-back-button>
+      <ion-back-button defaultHref="/lognin"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-  <form [formGroup]="formCadastrar" (ngSubmit)="submitForm()">
-    <ion-col size="12">
-      <ion-item>
-        <ion-label position="floating">Nome</ion-label>
-        <ion-input type="text" formControlName="nome"></ion-input>
-      </ion-item>
-      <span *ngIf="formCadastrar.get('nome')?.touched && formCadastrar.get('nome')?.errors?.['required']">Nome obrigatório</span>
-    </ion-col>
-  
-    <ion-col size="12">
-      <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input type="email" formControlName="email"></ion-input>
-      </ion-item>
-      <span *ngIf="formCadastrar.get('email')?.touched && formCadastrar.get('email')?.errors?.['required']">Email obrigatório</span>
-      <span *ngIf="formCadastrar.get('email')?.dirty && formCadastrar.get('email')?.errors?.['email']">Formato de email inválido</span>
-    </ion-col>
-  
-    <ion-col size="12">
-      <ion-item>
-        <ion-label position="floating">Senha</ion-label>
-        <ion-input type="password" formControlName="senha"></ion-input>
-      </ion-item>
-      <span *ngIf="formCadastrar.get('senha')?.touched && formCadastrar.get('senha')?.errors?.['required']">Senha obrigatória</span>
-      <span *ngIf="formCadastrar.get('senha')?.dirty && formCadastrar.get('senha')?.errors?.['minlength']">Senha precisa ter 6 dígitos</span>
-    </ion-col>
-  
-    <ion-col size="12">
-      <ion-item>
-        <ion-label position="floating">Confirme sua senha</ion-label>
-        <ion-input type="password" formControlName="confsenha"></ion-input>
-      </ion-item>
-      <span *ngIf="formCadastrar.get('confsenha')?.touched && formCadastrar.get('confsenha')?.errors?.['required']">Confirmação de senha obrigatória</span>
-      <span *ngIf="formCadastrar.get('senha')?.dirty && formCadastrar.get('senha')?.errors?.['minlength']">Senha precisa ter 6 dígitos</span>
-      <span *ngIf="formCadastrar.get('confsenha')?.dirty && (this.formCadastrar.get('senha')?.value != this.formCadastrar.get('confsenha')?.value)">As senhas precisam ser iguais</span>
-    </ion-col>
-  
-    <ion-button expand="full" color="success" type="submit">Cadastrar</ion-button>
-  </form>
-  
+<ion-content fullscreen>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form [formGroup]="formCadastrar" (ngSubmit)="submitForm()">
+          
+          <ion-item>
+            <ion-label position="floating">Nome</ion-label>
+            <ion-input type="text" formControlName="nome"></ion-input>
+          </ion-item>
+          <div *ngIf="formCadastrar.get('nome')?.touched && formCadastrar.get('nome')?.errors?.['required']" class="error-message">
+            Nome obrigatório
+          </div>
+          
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <div *ngIf="formCadastrar.get('email')?.touched && formCadastrar.get('email')?.errors?.['required']" class="error-message">
+            Email obrigatório
+          </div>
+          <div *ngIf="formCadastrar.get('email')?.dirty && formCadastrar.get('email')?.errors?.['email']" class="error-message">
+            Formato de email inválido
+          </div>
+          
+          <ion-item>
+            <ion-label position="floating">Senha</ion-label>
+            <ion-input type="password" formControlName="senha"></ion-input>
+          </ion-item>
+          <div *ngIf="formCadastrar.get('senha')?.touched && formCadastrar.get('senha')?.errors?.['required']" class="error-message">
+            Senha obrigatória
+          </div>
+          <div *ngIf="formCadastrar.get('senha')?.dirty && formCadastrar.get('senha')?.errors?.['minlength']" class="error-message">
+            Senha precisa ter 6 dígitos
+          </div>
+          
+          <ion-item>
+            <ion-label position="floating">Confirme sua senha</ion-label>
+            <ion-input type="password" formControlName="confsenha"></ion-input>
+          </ion-item>
+          <div *ngIf="formCadastrar.get('confsenha')?.touched && formCadastrar.get('confsenha')?.errors?.['required']" class="error-message">
+            Confirmação de senha obrigatória
+          </div>
+          <div *ngIf="formCadastrar.get('confsenha')?.dirty && formCadastrar.get('senha')?.value !== formCadastrar.get('confsenha')?.value" class="error-message">
+            As senhas precisam ser iguais
+          </div>
+          
+          <ion-button expand="full" color="success" type="submit">Cadastrar</ion-button>
+          
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
