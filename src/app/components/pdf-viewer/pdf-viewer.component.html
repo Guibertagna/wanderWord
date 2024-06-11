@@ -1,8 +1,8 @@
 
-<button class="save-button" (click)="onSaveAnnotations()">Salvar anotações</button>
 
 <ion-content >
- 
+  <button class="save-button" (click)="onSaveAnnotations()">Salvar anotações</button>
+
   <div class="pdf-container" style="height: 100vh;">
     <ngx-extended-pdf-viewer 
       [src]="selectedPdfUrl"
@@ -13,6 +13,7 @@
       [showPagingButtons]="true"
       [showPrintButton]="true"
       [handTool]="true"
+      
       [showHandToolButton]="true"
       [showOpenFileButton]="false">
     </ngx-extended-pdf-viewer>

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentChangeAction, fromDocRef } from '@angular/fire/compat/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable, throwError, of } from 'rxjs';
-import { finalize, catchError, switchMap } from 'rxjs/operators';
+import { Observable, throwError, of, from } from 'rxjs';
+import { finalize, catchError, switchMap, map, tap } from 'rxjs/operators';
 import Ebook, { FileType } from '../entities/ebook';
 import { PdfServiceService } from './pdf-service.service';
+import Bookcase from '../entities/bookcase'
 
 @Injectable({
   providedIn: 'root'
@@ -13,92 +14,87 @@ import { PdfServiceService } from './pdf-service.service';
 export class FirebaseService {
   private ebooksCollectionPath: string = 'ebooks';
   public documentId: string = ''
-
+  private bookcasesCollectionPath: string = 'bookcases';
   constructor(
     private angularFirestore: AngularFirestore,
     private storage: AngularFireStorage,
     private afAuth: AngularFireAuth,
     private pdfService: PdfServiceService
   ) { }
-
   uploadEbook(ebook: Ebook): Observable<number> {
-    const allowedFileTypes = [FileType.PDF, FileType.EPUB, FileType.MOBI];
     const fileExtension = ebook.file.name.split('.').pop()?.toLowerCase();
-
     if (!fileExtension) {
-      const errorMessage = 'Tipo de arquivo não suportado';
-      console.error(errorMessage);
-      return throwError(errorMessage);
+      return throwError('Tipo de arquivo não suportado');
     }
-
-    const fileName = ebook.file.name.replace(/\.[^/.]+$/, ''); // Remove a extensão do nome do arquivo
-    ebook.title = fileName; // Atribui o nome do arquivo ao campo title
-
+  
+    const fileName = ebook.file.name.replace(/\.[^/.]+$/, '');
+    ebook.title = fileName;
+  
     const filePath = `ebooks/${new Date().getTime()}_${ebook.file.name}`;
     const fileRef = this.storage.ref(filePath);
     const task: AngularFireUploadTask = this.storage.upload(filePath, ebook.file);
-
-    const uploadObservable = new Observable<number>((observer) => {
+  
+    return new Observable<number>((observer) => {
       task.percentageChanges().subscribe(
-        (percentage) => {
-          observer.next(percentage || 0);
-        },
-        (error) => {
-          console.error('Erro durante o upload do arquivo:', error);
-          observer.error(error);
-        },
+        (percentage) => observer.next(percentage || 0),
+        (error) => observer.error(error),
         () => {
           fileRef.getDownloadURL().subscribe(
             (url: string) => {
-              if (allowedFileTypes.includes(fileExtension as FileType)) {
-                this.pdfService.getPdfInfo(url).subscribe(
-                  (pdfInfo) => {
-                    ebook.pageCount = pdfInfo.pages || 0;
-                    ebook.author = pdfInfo.author || 'Unknown';
-                    ebook.filePath = filePath;
-                    ebook.fileUrl = url;
-                    // Agora vamos salvar a imagem da capa antes de salvar o eBook
-                    this.saveCoverImage(ebook).subscribe(
-                      () => {
-                        this.saveEbookToFirestore(ebook).subscribe(
-                          (docId) => {  // Recebe o ID do documento
-                            this.documentId = docId;  // Salva o ID do documento na variável 'documentId'
-                            console.log('E-book e capa salvos com sucesso');
-                            console.log('Document ID:', this.documentId);
-                            observer.complete();
-                          },
-                          (error) => {
-                            console.error('Erro ao salvar o e-book no Firestore:', error);
-                            observer.error(error);
-                          }
-                        );
-                      },
-                      (error) => {
-                        console.error('Erro ao salvar a imagem da capa:', error);
-                        observer.error(error);
-                      }
-                    );
-                  },
-                  (error) => {
-                    console.error('Erro ao obter informações do PDF:', error);
-                    observer.error(error);
-                  }
-                );
-              } else {
-                console.log('Extensão do arquivo:', fileExtension);
-                observer.complete();
-              }
+              ebook.filePath = filePath;
+              ebook.fileUrl = url;
+              observer.complete();
             },
-            (error: any) => {
-              console.error('Erro ao obter o URL de download:', error);
-              observer.error(error);
-            }
+            (error) => observer.error(error)
           );
         }
       );
     });
-
-    return uploadObservable;
+  }
+  
+  processEbook(ebook: Ebook): Observable<number> {
+    const fileExtension = ebook.file.name.split('.').pop()?.toLowerCase();
+    const allowedFileTypes = [FileType.PDF, FileType.EPUB, FileType.MOBI];
+  
+    return new Observable<number>((observer) => {
+      if (!fileExtension || !allowedFileTypes.includes(fileExtension as FileType)) {
+        observer.complete();
+        return;
+      }
+  
+      let progress = 0;
+      const updateProgress = (increment: number) => {
+        progress += increment;
+        observer.next(progress);
+      };
+  
+      this.pdfService.getPdfInfo(ebook.fileUrl).subscribe(
+        (pdfInfo) => {
+          ebook.pageCount = pdfInfo.pages || 0;
+          ebook.author = pdfInfo.author || 'Unknown';
+          updateProgress(20);
+  
+          this.saveCoverImage(ebook).subscribe(
+            () => {
+              updateProgress(20);
+  
+              this.saveEbookToFirestore(ebook).subscribe(
+                (docId) => {
+                  this.documentId = docId;
+                  console.log('E-book e capa salvos com sucesso');
+                  console.log('Document ID:', this.documentId);
+                  updateProgress(60);
+                  observer.complete();
+                },
+                (error) => observer.error(error)
+              );
+            },
+            (error) => observer.error(error)
+          );
+        },
+        (error) => observer.error(error)
+      );
+    });
   }
   
   replaceFileWithAnnotations(filePath: string, newBlob: Blob): Observable<string> {
@@ -120,16 +116,9 @@ export class FirebaseService {
       ).subscribe();
     });
   }
-  
-  
-  
-  
   updateEbook(ebook: Ebook): Observable<void> {
     return new Observable<void>((observer) => {
-      const ebookDocRef = this.angularFirestore.collection(this.ebooksCollectionPath).doc(ebook.docId);
-
-  
-  
+      const ebookDocRef = this.angularFirestore.collection(this.ebooksCollectionPath).doc(ebook.docId);  
       ebookDocRef.update({
         author: ebook.author,
         pageCount: ebook.pageCount,
@@ -145,8 +134,6 @@ export class FirebaseService {
       });
     });
   }
- 
-
   private saveCoverImage(ebook: Ebook): Observable<void> {
     return new Observable<void>((observer) => {
       this.pdfService.extractCover(ebook.fileUrl).subscribe(
@@ -183,7 +170,6 @@ export class FirebaseService {
       );
     });
   }
-
   private saveEbookToFirestore(ebook: Ebook): Observable<string> {
     return new Observable<string>((observer) => {
       this.angularFirestore.collection(this.ebooksCollectionPath).add({
@@ -210,9 +196,96 @@ export class FirebaseService {
       });
     });
   }
-  
-  
+  deleteEbook(ebookId: string): Observable<void> {
+    return new Observable<void>((observer) => {
+      // Excluir o e-book do Firestore
+      this.angularFirestore.collection(this.ebooksCollectionPath).doc(ebookId).delete()
+        .then(() => {
+          console.log('E-book excluído do Firestore');
+          
+          // Remover o e-book de todas as estantes
+          this.angularFirestore.collection(this.bookcasesCollectionPath).get().subscribe((querySnapshot) => {
+            const batch = this.angularFirestore.firestore.batch();
 
+            querySnapshot.forEach((doc) => {
+              const bookcase = doc.data() as Bookcase;
+              if (bookcase.books.includes(ebookId)) {
+                const updatedBooks = bookcase.books.filter(id => id !== ebookId);
+                const bookcaseDocRef = this.angularFirestore.collection(this.bookcasesCollectionPath).doc(doc.id).ref;
+                batch.update(bookcaseDocRef, { books: updatedBooks });
+              }
+            });
+
+            batch.commit().then(() => {
+              console.log('E-book removido de todas as estantes');
+              observer.next();
+              observer.complete();
+            }).catch((error) => {
+              console.error('Erro ao remover e-book das estantes:', error);
+              observer.error(error);
+            });
+          });
+        })
+        .catch((error) => {
+          console.error('Erro ao excluir o e-book:', error);
+          observer.error(error);
+        });
+    });
+  }
+  createBookcase(bookcase: Bookcase): Observable<string> {
+    return from(this.afAuth.currentUser).pipe(
+      switchMap(user => {
+        if (user) {
+          bookcase.userId = user.uid;
+          return from(this.angularFirestore.collection(this.bookcasesCollectionPath).add({ ...bookcase }));
+        } else {
+          return throwError('Usuário não está autenticado');
+        }
+      }),
+      map(docRef => docRef.id),
+      catchError(error => {
+        console.error('Erro ao criar a estante:', error);
+        return throwError(error);
+      })
+    );
+  }
+  getBookcases(): Observable<Bookcase[]> {
+    return from(this.afAuth.currentUser).pipe(
+      tap(user => console.log('Usuário atual:', user)),
+      switchMap(user => {
+        if (user) {
+          console.log('Usuário autenticado, buscando estantes...');
+          return this.angularFirestore.collection<Bookcase>(this.bookcasesCollectionPath, ref =>
+            ref.where('userId', '==', user.uid)
+          ).valueChanges({ idField: 'docId' }).pipe(
+            tap(bookcases => console.log('Estantes recebidas do Firestore:', bookcases))
+          );
+        } else {
+          console.error('Usuário não está autenticado');
+          return throwError('Usuário não está autenticado');
+        }
+      }),
+      catchError(error => {
+        console.error('Erro ao buscar estantes:', error);
+        return throwError(error);
+      })
+    );
+  }
+  getEbookById(bookId: string): Observable<Ebook> {
+    return this.angularFirestore.collection(this.ebooksCollectionPath).doc(bookId).get().pipe(
+      map(doc => {
+        if (doc.exists) {
+          return doc.data() as Ebook;
+        } else {
+          throw new Error('Ebook não encontrado');
+        }
+      }),
+      catchError(error => {
+        console.error('Erro ao buscar o ebook por ID:', error);
+        return throwError(error);
+      })
+    );
+  }
   getAllEbooks(): Observable<any[]> {
     return this.afAuth.authState.pipe(
       switchMap(user => {
@@ -225,5 +298,62 @@ export class FirebaseService {
         }
       })
     );
+  }
+  getBookCoverById(bookId: string): Observable<string> {
+    return this.angularFirestore.collection(this.ebooksCollectionPath).doc(bookId).get().pipe(
+      map(doc => {
+        if (doc.exists) {
+          const ebook = doc.data() as Ebook;
+          return ebook.coverImage;
+        } else {
+          throw new Error('Livro não encontrado');
+        }
+      }),
+      catchError(error => {
+        console.error('Erro ao buscar a capa do livro:', error);
+        return throwError(error);
+      })
+    );
+  }
+  getBookcaseById(bookcaseId: string): Observable<Bookcase> {
+    return this.angularFirestore.collection(this.bookcasesCollectionPath).doc(bookcaseId).valueChanges().pipe(
+      map((doc: any) => {
+        return { ...doc, docId: bookcaseId } as Bookcase;
+      }),
+      catchError(error => {
+        console.error('Erro ao buscar estante por ID:', error);
+        return throwError(error);
+      })
+    );
+  }
+  deleteBookcase(bookcaseId: string): Observable<void> {
+    return new Observable<void>((observer) => {
+      // Excluir a estante do Firestore
+      this.angularFirestore.collection(this.bookcasesCollectionPath).doc(bookcaseId).delete()
+        .then(() => {
+          console.log('Estante excluída do Firestore');
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          console.error('Erro ao excluir a estante:', error);
+          observer.error(error);
+        });
+    });
+  }
+  updateBookcase(bookcase: Bookcase): Observable<void> {
+    return new Observable<void>((observer) => {
+      const bookcaseDocRef = this.angularFirestore.collection(this.bookcasesCollectionPath).doc(bookcase.docId);
+      bookcaseDocRef.update({
+        books: bookcase.books
+      }).then(() => {
+        console.log('Estante atualizada com sucesso');
+        observer.next();
+        observer.complete();
+      }).catch((error) => {
+        console.error('Erro ao atualizar a estante:', error);
+        observer.error(error);
+      });
+    });
   }
 }

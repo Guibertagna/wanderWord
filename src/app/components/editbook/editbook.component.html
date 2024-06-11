@@ -6,21 +6,23 @@
   
     <ion-card-content class="ion-text-center">
       <ion-item lines="none">
-        <img [src]="ebook.coverImage" alt="Capa do eBook" >
+        <img [src]="ebook.coverImage" alt="Capa do eBook">
       </ion-item>
       <ion-item lines="none">
-        <ion-label position="stacked">Título do Livro</ion-label>
-        <ion-input type="text" [(ngModel)]="ebook.title"></ion-input>
+        <!-- Rótulo e campo de entrada para o título do livro -->
+        <ion-label position="stacked">Título do Livro </ion-label>
+        <ion-input type="text" [(ngModel)]="ebook.title" aria-label="titulo" aria-labelledby="titulo"></ion-input>
       </ion-item>
   
       <ion-item lines="none">
+        <!-- Rótulo e campo de entrada para o autor -->
         <ion-label position="stacked">Autor</ion-label>
-        <ion-input type="text" [(ngModel)]="ebook.author"></ion-input>
+        <ion-input type="text" [(ngModel)]="ebook.author" aria-label="titulo" aria-labelledby="titulo"></ion-input>
       </ion-item>
   
       <ion-item lines="none">
-        <ion-label position="stacked">Número de Páginas</ion-label>
-        <ion-input type="number" [(ngModel)]="ebook.pageCount"></ion-input>
+        <ion-label position="stacked">Número de Páginas </ion-label>
+        <ion-input type="number" [(ngModel)]="ebook.pageCount" aria-label="titulo" aria-labelledby="titulo" ></ion-input>
       </ion-item>
     </ion-card-content>
   </ion-card>

@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Cadastro</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/lognin"></ion-back-button>
+      <ion-back-button defaultHref="/login"></ion-back-button> <!-- Corrigido o link para "/login" -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -13,17 +13,19 @@
       <ion-col>
         <form [formGroup]="formCadastrar" (ngSubmit)="submitForm()">
           
+          <!-- Adicionado o rótulo diretamente no ion-input -->
           <ion-item>
             <ion-label position="floating">Nome</ion-label>
-            <ion-input type="text" formControlName="nome"></ion-input>
+            <ion-input type="text" formControlName="nome" label="Nome"></ion-input>
           </ion-item>
           <div *ngIf="formCadastrar.get('nome')?.touched && formCadastrar.get('nome')?.errors?.['required']" class="error-message">
             Nome obrigatório
           </div>
           
+          <!-- Adicionado o rótulo diretamente no ion-input -->
           <ion-item>
             <ion-label position="floating">Email</ion-label>
-            <ion-input type="email" formControlName="email"></ion-input>
+            <ion-input type="email" formControlName="email" label="Email"></ion-input>
           </ion-item>
           <div *ngIf="formCadastrar.get('email')?.touched && formCadastrar.get('email')?.errors?.['required']" class="error-message">
             Email obrigatório
@@ -32,9 +34,10 @@
             Formato de email inválido
           </div>
           
+          <!-- Adicionado o rótulo diretamente no ion-input -->
           <ion-item>
             <ion-label position="floating">Senha</ion-label>
-            <ion-input type="password" formControlName="senha"></ion-input>
+            <ion-input type="password" formControlName="senha" label="Senha"></ion-input>
           </ion-item>
           <div *ngIf="formCadastrar.get('senha')?.touched && formCadastrar.get('senha')?.errors?.['required']" class="error-message">
             Senha obrigatória
@@ -43,9 +46,10 @@
             Senha precisa ter 6 dígitos
           </div>
           
+          <!-- Adicionado o rótulo diretamente no ion-input -->
           <ion-item>
             <ion-label position="floating">Confirme sua senha</ion-label>
-            <ion-input type="password" formControlName="confsenha"></ion-input>
+            <ion-input type="password" formControlName="confsenha" label="Confirme sua senha"></ion-input>
           </ion-item>
           <div *ngIf="formCadastrar.get('confsenha')?.touched && formCadastrar.get('confsenha')?.errors?.['required']" class="error-message">
             Confirmação de senha obrigatória
@@ -61,4 +65,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-

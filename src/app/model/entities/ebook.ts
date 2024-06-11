@@ -51,3 +51,4 @@ export enum FileType {
   EPUB = 'epub',
   MOBI = 'mobi'
 }
+

@@ -1,32 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Logar</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
+<ion-content class="ion-padding">
+  <div class="logo-container">
+    <ion-img [src]="'assets/logo.png'" class="logo"></ion-img>
+  </div>
+  
   <form [formGroup]="formLogar" (ngSubmit)="submitForm()">
-    <ion-col size="12">
-      <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input type="email" formControlName="email"></ion-input>
-      </ion-item>
-      <span *ngIf="formLogar.get('email')?.touched && formLogar.get('email')?.errors?.['required']">Email obrigatório</span>
-      <span *ngIf="formLogar.get('email')?.dirty && formLogar.get('email')?.errors?.['email']">Formato de email inválido</span>
-    </ion-col>
+    <div class="container-form">
+      <ion-col size="12">
+        <ion-item class="rounded-border" no-lines>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" formControlName="email" placeholder="Insira seu email"></ion-input>
+          <div class="error-container">
+            <span class="error-message" *ngIf="formLogar.get('email')?.touched && formLogar.get('email')?.errors?.['required']">*Email obrigatório</span>
+            <span class="error-message" *ngIf="formLogar.get('email')?.dirty && formLogar.get('email')?.errors?.['email']">*Formato de email inválido</span>
+          </div>
+        </ion-item>
+      </ion-col>
+      
+      <ion-col size="12">
+        <ion-item class="rounded-border" no-lines>
+          <ion-label position="floating">Senha</ion-label>
+          <ion-input type="password" formControlName="senha" placeholder="Insira sua senha"></ion-input>
+          <div class="error-container">
+            <span class="error-message" *ngIf="formLogar.get('senha')?.touched && formLogar.get('senha')?.errors?.['required']">*Senha obrigatória</span>
+            <span class="error-message" *ngIf="formLogar.get('senha')?.dirty && formLogar.get('senha')?.errors?.['minlength']">*Senha precisa ter 6 dígitos</span>
+          </div>
+        </ion-item>
+      </ion-col>
+    </div>
     
-    <ion-col size="12">
-      <ion-item>
-        <ion-label position="floating">Senha</ion-label>
-        <ion-input type="password" formControlName="senha"></ion-input>
-      </ion-item>
-      <span *ngIf="formLogar.get('senha')?.touched && formLogar.get('senha')?.errors?.['required']">Senha obrigatória</span>
-      <span *ngIf="formLogar.get('senha')?.dirty && formLogar.get('senha')?.errors?.['minlength']">Senha precisa ter 6 dígitos</span>
-    </ion-col>
-
-    <ion-button expand="full" color="success" type="submit">Entrar</ion-button>
-    
-    <ion-button expand="full" color="danger" (click)="logarComGoogle()">ENTRAR COM O GOOGLE <ion-icon slot="end" name="logo-google"></ion-icon></ion-button>
-    <ion-button expand="full" (click)="irParaSingUp()">Não tem cadastro? Clique aqui</ion-button>
+    <div class="container-botton"> 
+      <ion-button expand="full" color="success" type="submit">Entrar</ion-button>
+      <ion-button expand="full" color="danger" (click)="logarComGoogle()">ENTRAR COM O GOOGLE <ion-icon slot="end" name="logo-google"></ion-icon></ion-button>
+      <ion-button expand="full" (click)="irParaSingUp()">Não tem cadastro? Clique aqui</ion-button>
+    </div>
   </form>
 </ion-content>

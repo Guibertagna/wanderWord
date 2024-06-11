@@ -8,9 +8,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { PdfViewerComponent } from './pdf-viewer/pdf-viewer.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { EditbookComponent } from './editbook/editbook.component';
+import { BookcasecomponentComponent } from './bookcasecomponent/bookcasecomponent.component';
 
 @NgModule({
-  declarations: [EbookshomeComponent, ProfileComponent, PdfViewerComponent, EditbookComponent],
+  declarations: [EbookshomeComponent, ProfileComponent, PdfViewerComponent, EditbookComponent, BookcasecomponentComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -18,6 +19,6 @@ import { EditbookComponent } from './editbook/editbook.component';
     FormsModule,
     NgxExtendedPdfViewerModule,
   ],
-  exports: [EbookshomeComponent, ProfileComponent, PdfViewerComponent, EditbookComponent],
+  exports: [EbookshomeComponent, ProfileComponent, PdfViewerComponent, EditbookComponent, BookcasecomponentComponent],
 })
 export class ComponentsModule {}

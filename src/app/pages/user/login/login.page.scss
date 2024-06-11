@@ -1,0 +1,53 @@
+.content-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+ 
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    margin-top: 80px;
+  }
+  
+  .logo {
+    width: 60vh;
+    height: auto;
+  }
+  
+  .form-container {
+ 
+    margin-top: 20px;
+  }
+  
+  .container-form {
+    margin-top: 20px;
+  }
+  
+  .error-container {
+    padding-left: 20px;
+  }
+  .rounded-border {
+    border: 2px solid #000;
+    border-radius: 20px;
+  
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    display: block;
+  }
+  
+  .container-botton {
+    margin-top: 20px;
+  }
+  
+  ion-button {
+    margin-top: 10px;
+  }
+  

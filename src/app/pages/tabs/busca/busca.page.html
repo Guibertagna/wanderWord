@@ -1,19 +1,19 @@
-  <ion-header [translucent]="true">
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>busca</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title>busca</ion-title>
+      <ion-title size="large">busca</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-      <ion-toolbar>
-        <ion-title size="large">busca</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-button>
-      <input type="file" (change)="handleUpload($event)" accept=".pdf,.epub,.mobi">
-    </ion-button>
-    <ion-button expand="block" (click)="uploadEbook()">Upload PDF</ion-button>
-    <div>{{ percentage }}%</div>
-    <ion-progress-bar [value]="percentage / 100"></ion-progress-bar>
-  </ion-content>
+  <ion-button [disabled]="isUploading">
+    <input type="file" (change)="handleUpload($event)" accept=".pdf,.epub,.mobi" [disabled]="isUploading">
+  </ion-button>
+  <ion-button expand="block" (click)="uploadEbook()" [disabled]="isUploading">Upload PDF</ion-button>
+  <div>{{ percentage }}%</div>
+  <ion-progress-bar [value]="percentage / 100"></ion-progress-bar>
+</ion-content>

@@ -22,7 +22,7 @@ export class PdfViewerComponent implements OnInit {
   ngOnInit() {}
 
   async onSaveAnnotations() { // tornando a função async para usar 'await'
-    console.log("aaaaa")
+   
     const blobPromise = this.pdfService.getCurrentDocumentAsBlob(); // Obtendo a promessa do Blob
     try {
       const blob = await blobPromise; // Aguardando a resolução da promessa

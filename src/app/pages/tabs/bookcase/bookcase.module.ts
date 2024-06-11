@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { BookcasePageRoutingModule } from './bookcase-routing.module';
 
 import { BookcasePage } from './bookcase.page';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    BookcasePageRoutingModule
+    BookcasePageRoutingModule,
+    ComponentsModule
   ],
   declarations: [BookcasePage]
 })

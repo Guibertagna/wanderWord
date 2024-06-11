@@ -7,6 +7,7 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
+  
   {
     path: 'tabs',
     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
@@ -28,14 +29,20 @@ const routes: Routes = [
     loadChildren: () => import('./pages/edit-ebook/edit-ebook.module').then(m => m.EditEbookPageModule)
   },
   {
+    path: 'createbookcase',
+    loadChildren: () => import('./pages/createbookcase/createbookcase.module').then( m => m.CreatebookcasePageModule)
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
   },
-  {
-    path: 'edit-ebook',
-    loadChildren: () => import('./pages/edit-ebook/edit-ebook.module').then( m => m.EditEbookPageModule)
-  }
+  
+ 
+  
+  
+ 
+ 
 ];
 
 @NgModule({
