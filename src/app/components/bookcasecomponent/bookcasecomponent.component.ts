@@ -21,7 +21,7 @@ export class BookcasecomponentComponent implements OnInit {
     private firebaseService: FirebaseService,
     private router: Router,
     private actionSheetController: ActionSheetController,
-    private alertController : AlertController
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -115,26 +115,23 @@ export class BookcasecomponentComponent implements OnInit {
     });
     await actionSheet.present();
   }
+
   editBookcase(bookcase: Bookcase) {
-    // Implemente a lógica de edição aqui
     console.log('Editando estante:', bookcase);
   }
-  
+
   async deleteBookcase(bookcase: Bookcase) {
     if (!bookcase.docId) {
       console.error('ID da estante indefinido:', bookcase);
       return;
     }
-  
-    // Exibe um prompt de confirmação antes de excluir a estante
-    const confirmDelete = await this.confirmDeleteBookcase();
-  
+
+    const confirmDelete = await this.confirmDelete('Tem certeza de que deseja excluir esta estante?');
+
     if (confirmDelete) {
-      // Chama a função deleteBookcase do serviço FirebaseService
       this.firebaseService.deleteBookcase(bookcase.docId).subscribe(
         () => {
           console.log('Estante excluída com sucesso:', bookcase);
-          // Remove a estante da lista localmente
           this.bookcases = this.bookcases.filter(bc => bc.docId !== bookcase.docId);
         },
         (error) => {
@@ -143,31 +140,56 @@ export class BookcasecomponentComponent implements OnInit {
       );
     }
   }
-  
-  
-  async confirmDeleteBookcase(): Promise<boolean> {
+
+  async confirmDelete(message: string): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       const alert = await this.alertController.create({
         header: 'Confirmação',
-        message: 'Tem certeza de que deseja excluir esta estante?',
+        message: message,
         buttons: [
           {
             text: 'Cancelar',
             role: 'cancel',
             handler: () => {
-              resolve(false); // Resposta do usuário: Cancelar
+              resolve(false);
             }
           },
           {
             text: 'Excluir',
             handler: () => {
-              resolve(true); // Resposta do usuário: Excluir
+              resolve(true);
             }
           }
         ]
       });
-  
+
       await alert.present();
     });
   }
-}  
+
+  createBookcase() {
+    this.router.navigate(['/createbookcase']);
+  }
+  async confirmDeleteBook(bookId: string, bookcase: Bookcase) {
+    const confirmDelete = await this.confirmDelete('Tem certeza de que deseja excluir este livro?');
+
+    if (confirmDelete) {
+      this.deleteBook(bookId, bookcase);
+    }
+  }
+
+  deleteBook(bookId: string, bookcase: Bookcase) {
+    const bookIndex = bookcase.books.indexOf(bookId);
+    if (bookIndex > -1) {
+      bookcase.books.splice(bookIndex, 1);
+      this.firebaseService.updateBookcase(bookcase).subscribe(
+        () => {
+          console.log('Livro excluído com sucesso da estante:', bookcase);
+        },
+        (error) => {
+          console.error('Erro ao excluir livro da estante:', error);
+        }
+      );
+    }
+  }
+}

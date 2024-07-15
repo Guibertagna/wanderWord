@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/model/service/auth.service';
 })
 export class LoginPage implements OnInit {
   formLogar: FormGroup;
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) {
     this.formLogar = new FormGroup({
@@ -29,7 +31,7 @@ export class LoginPage implements OnInit {
     return this.formLogar.controls;
   }
 
-  private logar() {
+  logar() {
     this.authService.singIn(this.formLogar.value['email'], this.formLogar.value['senha']).then((res) => {
       this.router.navigate(['tabs/home']);
     }).catch((error) => {
@@ -55,7 +57,11 @@ export class LoginPage implements OnInit {
   }
 
   irParaSingUp() {
-    console.log('to indo')
     this.router.navigate(['/singup']);
+  }
+
+  togglePasswordVisibility() {
+    this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 }

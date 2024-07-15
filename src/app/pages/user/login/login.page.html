@@ -2,24 +2,29 @@
   <div class="logo-container">
     <ion-img [src]="'assets/logo.png'" class="logo"></ion-img>
   </div>
-  
+
   <form [formGroup]="formLogar" (ngSubmit)="submitForm()">
     <div class="container-form">
       <ion-col size="12">
         <ion-item class="rounded-border" no-lines>
+          <ion-icon name="mail" slot="start" class="custom"></ion-icon>
           <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" formControlName="email" placeholder="Insira seu email"></ion-input>
+          <ion-input type="email" formControlName="email" placeholder="Insira seu email" ></ion-input>
           <div class="error-container">
             <span class="error-message" *ngIf="formLogar.get('email')?.touched && formLogar.get('email')?.errors?.['required']">*Email obrigatório</span>
             <span class="error-message" *ngIf="formLogar.get('email')?.dirty && formLogar.get('email')?.errors?.['email']">*Formato de email inválido</span>
           </div>
         </ion-item>
       </ion-col>
-      
+
       <ion-col size="12">
         <ion-item class="rounded-border" no-lines>
+          <ion-icon name="lock-closed" slot="start" class="custom"></ion-icon>
           <ion-label position="floating">Senha</ion-label>
-          <ion-input type="password" formControlName="senha" placeholder="Insira sua senha"></ion-input>
+          <ion-input [type]="passwordType" formControlName="senha" placeholder="Insira sua senha"></ion-input>
+          <ion-button fill="clear" size="small" slot="end" (click)="togglePasswordVisibility()" style="background-color: transparent;">
+            <ion-icon [name]="passwordIcon" class="custom"></ion-icon>
+          </ion-button>
           <div class="error-container">
             <span class="error-message" *ngIf="formLogar.get('senha')?.touched && formLogar.get('senha')?.errors?.['required']">*Senha obrigatória</span>
             <span class="error-message" *ngIf="formLogar.get('senha')?.dirty && formLogar.get('senha')?.errors?.['minlength']">*Senha precisa ter 6 dígitos</span>
@@ -27,10 +32,10 @@
         </ion-item>
       </ion-col>
     </div>
-    
+
     <div class="container-botton"> 
-      <ion-button expand="full" color="success" type="submit">Entrar</ion-button>
-      <ion-button expand="full" color="danger" (click)="logarComGoogle()">ENTRAR COM O GOOGLE <ion-icon slot="end" name="logo-google"></ion-icon></ion-button>
+      <ion-button expand="full"   class="button-custom" caltype="submit" (click)="logar()">Entrar</ion-button>
+      <ion-button expand="full" class="button-google" (click)="logarComGoogle()">ENTRAR COM O GOOGLE <ion-icon slot="end" name="logo-google" ></ion-icon></ion-button>
       <ion-button expand="full" (click)="irParaSingUp()">Não tem cadastro? Clique aqui</ion-button>
     </div>
   </form>

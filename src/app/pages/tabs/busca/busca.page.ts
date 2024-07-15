@@ -37,7 +37,7 @@ export class BuscaPage implements OnInit {
   handleUpload(event: any) {
     const file = event.target.files[0]; 
     if (file) {
-      this.ebook.file = file; 
+      this.ebook.file = file;
     }
   }
 

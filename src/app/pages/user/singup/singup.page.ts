@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertService } from 'src/app/common/alert.service';
 import { AuthService } from 'src/app/model/service/auth.service';
 
 @Component({
@@ -10,9 +9,13 @@ import { AuthService } from 'src/app/model/service/auth.service';
   styleUrls: ['./singup.page.scss'],
 })
 export class SingupPage implements OnInit {
-  formCadastrar : FormGroup;
+  formCadastrar: FormGroup;
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+  confirmPasswordType: string = 'password';
+  confirmPasswordIcon: string = 'eye-off';
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private authService : AuthService) { 
+  constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService) { 
     this.formCadastrar = new FormGroup({
       email: new FormControl(''),
       senha: new FormControl(''),
@@ -20,37 +23,44 @@ export class SingupPage implements OnInit {
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.formCadastrar = this.formBuilder.group({
+      nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      senha: ['',[Validators.required, Validators.minLength(6)]],
-      confsenha: ['',[Validators.required, Validators.minLength(6)]]
-    })
+      senha: ['', [Validators.required, Validators.minLength(6)]],
+      confsenha: ['', [Validators.required, Validators.minLength(6)]]
+    });
   }
 
-  get errorControl(){
+  get errorControl() {
     return this.formCadastrar.controls;
   }
 
   cadastrar() {
     this.authService.signUpWithEmailAndPassword(this.formCadastrar.value['email'], this.formCadastrar.value['senha']).then((res) => {
-      // Aqui vai o código para realizar as ações após o cadastro com sucesso
       this.router.navigate(["tabs/home"]);
     }).catch((error) => {
-      // Aqui vai o código para lidar com o erro durante o cadastro
       console.log(error.message);
     });
   }
 
   submitForm(): boolean {
-    if (!this.formCadastrar.valid || this.formCadastrar.value['senha'] != this.formCadastrar.value['confsenha']) {
-      // Aqui vai o código para lidar com o formulário inválido ou senhas diferentes
+    if (!this.formCadastrar.valid || this.formCadastrar.value['senha'] !== this.formCadastrar.value['confsenha']) {
       return false;
     } else {
-      // Aqui vai o código para quando o formulário é válido
       this.cadastrar();
       return true;
     }
   }
 
+  togglePasswordVisibility() {
+    this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.confirmPasswordType = this.confirmPasswordType === 'password' ? 'text' : 'password';
+    this.confirmPasswordIcon = this.confirmPasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
 }
+  

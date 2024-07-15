@@ -1,29 +1,42 @@
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-list>
-    <ion-item *ngFor="let bookcase of bookcases" class="collection-container">
+    <ion-item *ngFor="let bookcase of bookcases" class="collection-container" lines="none">
       <ion-label>
-        <h2 class="collection-title">{{ bookcase.bookcasename }}</h2>
+        <h2 class="collection-title">
+          <ion-icon name="library-outline"></ion-icon>
+          {{ bookcase.bookcasename }}
+        </h2>
         <div class="cover-container">
-          <ion-img 
-            *ngFor="let bookId of bookcase.books.slice(0, showAll[bookcase.bookcasename] ? bookcase.books.length : 0)"
-            class="cover-image"
-            [src]="bookCovers[bookId]"
-            alt="Cover"
-            (click)="onEbookClicked(bookId)">
-          </ion-img>
+          <div *ngFor="let bookId of bookcase.books.slice(0, showAll[bookcase.bookcasename] ? bookcase.books.length : 0)" class="book-item">
+            <ion-img 
+              class="cover-image"
+              [src]="bookCovers[bookId]"
+              alt="Cover"
+              (click)="onEbookClicked(bookId)">
+            </ion-img>
+            <ion-button fill="clear" (click)="confirmDeleteBook(bookId, bookcase)">
+              <ion-icon name="trash" color="danger"></ion-icon>
+            </ion-button>
+          </div>
           <div class="cover-placeholder" *ngIf="bookcase.books.length === 0">Nenhuma capa disponível</div>
         </div>
         <div class="button-container">
-          <button ion-button (click)="toggleShowAll(bookcase.bookcasename)">
+          <ion-button (click)="toggleShowAll(bookcase.bookcasename)">
             {{ showAll[bookcase.bookcasename] ? 'Mostrar Menos' : 'Mostrar Mais' }}
-          </button>
+          </ion-button>
         </div>
       </ion-label>
-      <ion-buttons slot="start">
+      <ion-buttons>
         <ion-button (click)="presentActionSheet(bookcase)">
           <ion-icon name="ellipsis-vertical"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-item>
   </ion-list>
+  <div class="add">
+    <ion-button (click)="createBookcase()" fill="clear">
+      <ion-icon name="add-circle" style="color: #0E0047;"></ion-icon>
+      CRIAR NOVA ESTANTE
+    </ion-button>
+  </div>
 </ion-content>

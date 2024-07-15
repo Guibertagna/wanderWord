@@ -13,7 +13,4 @@ export class BookcasePage implements OnInit {
   ngOnInit() {
   }
 
-  createBookcase() {
-    this.router.navigate(['/createbookcase']);
-  }
 }

@@ -1,19 +1,40 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>busca</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-content >
+  <ion-header >
     <ion-toolbar>
-      <ion-title size="large">busca</ion-title>
+      <ion-title >UPLOAD</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button [disabled]="isUploading">
-    <input type="file" (change)="handleUpload($event)" accept=".pdf,.epub,.mobi" [disabled]="isUploading">
+  
+  
+  <!-- Instruções para o usuário -->
+  <div class="instructions">
+    <p>Siga as instruções abaixo para fazer o upload de um livro:</p>
+    <ol>
+      <li>Clique no botão "Escolher Arquivo" abaixo.</li>
+      <li>Selecione o arquivo do livro no formato .pdf.</li>
+      <li>Depois de escolher o arquivo, clique no botão "Upload Arquivo".</li>
+      <li>Aguarde enquanto o arquivo é carregado.</li>
+    </ol>
+  </div>
+
+  <!-- Botão para escolher arquivo -->
+  <div class="upload-button" (click)="fileInput.click()">
+    <ion-icon name="cloud-upload-outline" style="margin-right: 10px;"></ion-icon>
+    Escolher Arquivo
+    <input #fileInput type="file" (change)="handleUpload($event)" accept=".pdf,.epub,.mobi">
+  </div>
+
+  <!-- Botão de upload, que só aparece se um arquivo foi escolhido -->
+  <ion-button *ngIf="ebook.file"  class="upload-button-block" (click)="uploadEbook()" [disabled]="isUploading">
+    <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+    Upload Arquivo
   </ion-button>
-  <ion-button expand="block" (click)="uploadEbook()" [disabled]="isUploading">Upload PDF</ion-button>
-  <div>{{ percentage }}%</div>
-  <ion-progress-bar [value]="percentage / 100"></ion-progress-bar>
+
+  
+  <div class="upload-progress">
+    <div class="upload-progress-bar" [style.width]="percentage + '%'"></div>
+  </div>
+  <div class="percentage-text">{{ percentage }}%</div>
+
 </ion-content>
