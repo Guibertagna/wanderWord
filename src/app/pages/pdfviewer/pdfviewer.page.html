@@ -3,10 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>pdfviewerPAGE</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" scroll-y="false"> <!-- Remova o scroll vertical -->
+<ion-content [fullscreen]="true" scroll-y="false"> 
   <app-pdf-viewer [selectedPdfUrl]="selectedPdfUrl" [documentId]="documentId"></app-pdf-viewer>
 </ion-content>

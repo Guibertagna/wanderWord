@@ -3,6 +3,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgxExtendedPdfViewerService } from 'ngx-extended-pdf-viewer';
 import { FirebaseService } from 'src/app/model/service/firebase-service.service';
+import { AlertController, LoadingController } from '@ionic/angular'; // Importar LoadingController
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -16,34 +17,55 @@ export class PdfViewerComponent implements OnInit {
 
   constructor(
     private pdfService: NgxExtendedPdfViewerService,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private loadingController: LoadingController, // Injetar LoadingController
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {}
 
-  async onSaveAnnotations() { // tornando a função async para usar 'await'
-   
-    const blobPromise = this.pdfService.getCurrentDocumentAsBlob(); // Obtendo a promessa do Blob
+  async onSaveAnnotations() {
+    const loading = await this.loadingController.create({
+      message: 'Atualizando arquivo...',
+      spinner: 'crescent' // Ou 'bubbles', 'circles', 'lines', etc.
+    });
+    await loading.present(); // Mostrar carregamento
+
+    const blobPromise = this.pdfService.getCurrentDocumentAsBlob();
     try {
-      const blob = await blobPromise; // Aguardando a resolução da promessa
+      const blob = await blobPromise;
       if (blob) {
         this.firebaseService.replaceFileWithAnnotations(this.selectedPdfUrl, blob).subscribe(
-          (selectedPdfUrl) => {
+          async (selectedPdfUrl) => {
             console.log('Arquivo substituído com sucesso:', selectedPdfUrl);
-            // Aqui você pode lidar com o sucesso, como mostrar uma mensagem para o usuário
+            await this.showAlert('Sucesso', 'Arquivo atualizado com sucesso!');
+            await loading.dismiss(); // Ocultar carregamento
           },
-          (error) => {
+          async (error) => {
             console.error('Erro ao substituir o arquivo:', error);
-            // Aqui você pode lidar com o erro, como mostrar uma mensagem de erro para o usuário
+            await this.showAlert('Erro', 'Erro ao atualizar o arquivo.');
+            await loading.dismiss(); // Ocultar carregamento
           }
         );
       } else {
         console.error('Erro ao obter o Blob com as anotações');
-        // Aqui você pode lidar com o erro, como mostrar uma mensagem de erro para o usuário
+        await this.showAlert('Erro', 'Erro ao obter o Blob com as anotações.');
+        await loading.dismiss(); // Ocultar carregamento
       }
     } catch (error) {
       console.error('Erro ao obter o Blob com as anotações:', error);
-      // Aqui você pode lidar com o erro, como mostrar uma mensagem de erro para o usuário
+      await this.showAlert('Erro', 'Erro ao obter o Blob com as anotações.');
+      await loading.dismiss(); // Ocultar carregamento
     }
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

@@ -1,12 +1,14 @@
-<ion-content>
-  <ion-card *ngIf="user">
-    <ion-card-content>
-      <p>Email: {{ user.email }}</p>
-      <ion-button (click)="logout()" expand="block" color="danger">Logout</ion-button>
-    </ion-card-content>
-  </ion-card>
+<ion-content class="content-center">
+  <div class="card-wrapper">
+    <ion-card *ngIf="user" class="user-card">
+      <ion-card-content>
+        <p>Email: {{ user.email }}</p>
+        <ion-button (click)="logout()" expand="block" color="danger">Logout</ion-button>
+      </ion-card-content>
+    </ion-card>
 
-  <ng-container *ngIf="!user">
-    <p>Nenhum usuário logado.</p>
-  </ng-container>
+    <ng-container >
+      <p class="sem-user" *ngIf="!user" >Nenhum usuário logado.</p>
+    </ng-container>
+  </div>
 </ion-content>

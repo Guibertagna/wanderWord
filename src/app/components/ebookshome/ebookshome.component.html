@@ -1,22 +1,23 @@
 <ion-header [translucent]="true">
 
-<ion-content [fullscreen]="true">
-  <ion-searchbar  [(ngModel)]="searchTerm" (ionChange)="filterEbooks()" placeholder="Buscar eBooks" ></ion-searchbar>
-  <div class="ebooks-grid">
-    <div *ngFor="let ebook of filteredEbooks" (click)="onEbookClicked(ebook)" class="ebook-card">
-      <div class="cover-image-container">
-        <img [src]="ebook.coverImage" alt="Capa do eBook" class="cover-image">
-      </div>
-      <div class="ebook-info">
-        <h2>{{ ebook.title }}</h2>
-        <p>Autor: {{ ebook.author }}</p>
-        <p>Número de páginas: {{ ebook.pageCount }}</p>
-      </div>
-      <div class="options-button-container">
-        <ion-button fill="clear" (click)="onOptionsClicked($event, ebook)">
-          <ion-icon  name="ellipsis-vertical" style="color: #908FA2;"></ion-icon>
-        </ion-button>
+  <ion-content [fullscreen]="true">
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterEbooks()" placeholder="Buscar eBooks"></ion-searchbar>
+    <div class="ebooks-grid">
+      <div *ngFor="let ebook of filteredEbooks" (click)="onEbookClicked(ebook)" class="ebook-card">
+        <div class="cover-image-container">
+          <img [src]="ebook.coverImage" alt="Capa do eBook" class="cover-image">
+        </div>
+        <div class="ebook-info">
+          <h2>{{ ebook.title }}</h2>
+          <p>Autor: {{ ebook.author }}</p>
+          <p>Número de páginas: {{ ebook.pageCount }}</p>
+        </div>
+        <div class="options-button-container">
+          <ion-button fill="clear" (click)="onOptionsClicked($event, ebook)">
+            <ion-icon name="ellipsis-vertical" style="color: #908FA2;"></ion-icon>
+          </ion-button>
+        </div>
       </div>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
+  

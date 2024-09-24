@@ -3,13 +3,25 @@
   padding: 15px;
   background-color: #0E0047; /* Cor de fundo do card */
   border-radius: 10px;
-  color: #0E0047;
+  color: #ffffff;
   width: 90%; /* Ajuste a largura para caber melhor em dispositivos móveis */
   margin-left: auto;
   margin-right: auto;
   display: flex;
   flex-direction: column;
   align-items: center; /* Centraliza o conteúdo horizontalmente */
+}
+content{
+  padding-top: 20px;
+}
+.collection-container {
+  --ion-background-color: #0E0047; /* Cor de fundo do card no modo claro */
+}
+
+@media (prefers-color-scheme: dark) {
+  .collection-container {
+    --ion-background-color: #1f1f1f; /* Cor de fundo do card no modo escuro */
+  }
 }
 
 .collection-title {
@@ -18,7 +30,7 @@
   color: #ffffff;
   display: flex;
   align-items: center;
-  justify-content: left; /* Centraliza o título */
+  justify-content: center; /* Centraliza o título */
   width: 100%; /* Faz o título ocupar toda a largura disponível */
   text-align: center; /* Centraliza o texto */
 }
@@ -29,11 +41,6 @@
   left: 50%;
   transform: translateX(-50%);
   width: 100%; /* Para garantir que o botão esteja centralizado */
-}
-
-.collection-title ion-icon {
-  margin-right: 8px;
-  color: #ffffff;
 }
 
 .cover-container {
@@ -71,13 +78,14 @@ ion-item {
 ion-button {
   padding: 0;
   margin-top: 5px;
-  color:#ffffff;
+  color: #ffffff;
 }
 
 ion-icon {
   font-size: 1.2em;
-  color: #0E0047;
+  color: #ffffff;
 }
+
 .cover-placeholder {
   width: 100px; /* Aumentando o tamanho do placeholder para combinar com a imagem */
   height: 150px; /* Aumentando o tamanho do placeholder para combinar com a imagem */
@@ -94,7 +102,7 @@ ion-icon {
   text-align: center;
 }
 
-.button-container button {
+.button-container ion-button {
   --background: #0E0047;
   --color: #ffffff;
   border: none;
@@ -104,6 +112,11 @@ ion-icon {
   transition: background-color 0.3s ease;
 }
 
-.button-container button:hover {
+.button-container ion-button:hover {
   --background: #000000;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
 }

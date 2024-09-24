@@ -22,6 +22,17 @@ ion-searchbar {
     background:  #47465D;
    
   }
+  .action-button-add {
+    color: black !important; /* Texto "Adicionar a Estante" em preto */
+  }
+  
+  .action-button-edit {
+    color: black !important; /* Texto "Editar" em preto */
+  }
+  
+  .action-button-delete {
+    color: red !important; /* Texto "Excluir" em vermelho */
+  }
   
   .ebook-card:hover {
     transform: scale(1.02);

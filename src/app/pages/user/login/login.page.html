@@ -22,7 +22,7 @@
           <ion-icon name="lock-closed" slot="start" class="custom"></ion-icon>
           <ion-label position="floating">Senha</ion-label>
           <ion-input [type]="passwordType" formControlName="senha" placeholder="Insira sua senha"></ion-input>
-          <ion-button fill="clear" size="small" slot="end" (click)="togglePasswordVisibility()" style="background-color: transparent;">
+          <ion-button class="olho" fill="clear" size="small" slot="end" (click)="togglePasswordVisibility()" style="background-color: transparent;">
             <ion-icon [name]="passwordIcon" class="custom"></ion-icon>
           </ion-button>
           <div class="error-container">
@@ -34,9 +34,9 @@
     </div>
 
     <div class="container-botton"> 
-      <ion-button expand="full"   class="button-custom" caltype="submit" (click)="logar()">Entrar</ion-button>
-      <ion-button expand="full" class="button-google" (click)="logarComGoogle()">ENTRAR COM O GOOGLE <ion-icon slot="end" name="logo-google" ></ion-icon></ion-button>
-      <ion-button expand="full" (click)="irParaSingUp()">Não tem cadastro? Clique aqui</ion-button>
+      <ion-button expand="full"   class="button-custom" caltype="submit" (click)="logar()" >Entrar</ion-button>
+      <ion-button expand="full" class="button-google" (click)="logarComGoogle()" style="border-radius: 10px;">ENTRAR COM O GOOGLE <ion-icon slot="end" name="logo-google" ></ion-icon></ion-button>
+      <ion-button expand="full" class="cadastrar" (click)="irParaSingUp()">Não tem cadastro? Clique aqui</ion-button>
     </div>
   </form>
 </ion-content>

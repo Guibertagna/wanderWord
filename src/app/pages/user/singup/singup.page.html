@@ -1,13 +1,10 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-  <ion-title >Cadastro</ion-title>
+<ion-content class="ion-padding">
+  <div class="back-button-container">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/login"></ion-back-button>
     </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+  </div>
 
-<ion-content class="ion-padding">
   <div class="logo-container">
     <ion-img [src]="'assets/logo.png'" class="logo"></ion-img>
   </div>
@@ -69,7 +66,7 @@
     </div>
 
     <div class="container-botton">
-      <ion-button expand="full" color="success" type="submit">Cadastrar</ion-button>
+      <ion-button class="cadastro" expand="full" type="submit">Cadastrar</ion-button>
     </div>
   </form>
 </ion-content>

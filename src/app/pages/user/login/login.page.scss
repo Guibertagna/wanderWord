@@ -49,6 +49,7 @@
     
     ion-button {
       margin-top: 10px;
+
     }
     .custom {
       color: #0e0047; /* Cor dos ícones */
@@ -59,17 +60,20 @@
     }
     
     .button-custom {
-      --background:#0e0047; /* Cor de fundo dos botões */
+      background:#0e0047; /* Cor de fundo dos botões */
       color: #ffffff; /* Cor do texto dos botões */
+      border-radius: 10px;
     }
     .button-google{
-      --background: #4285f4
+      border-radius: 10px;
+      background: #4b25e7;
+    
     }
 
-    .button{
-      background: #47465D;
-    }
-    
+.cadastrar{
+  background-color: #47465D;
+  border-radius: 10px;
+}
     ion-item.rounded-border {
       --border-color: #0e0047; /* Cor da borda dos inputs */
     }

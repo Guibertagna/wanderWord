@@ -10,6 +10,9 @@ ion-toolbar {
 ion-title {
   text-transform: capitalize;
   font-weight: bold;
+} 
+ion-li{
+  color: #000000;
 }
 
 ion-content {
@@ -38,11 +41,13 @@ ion-content {
 
 .instructions p {
   font-size: 16px;
+  color: #000000;
   margin-bottom: 10px;
 }
 
 .instructions ol {
   padding-left: 20px;
+  color: #000000;
 }
 
 .upload-button {

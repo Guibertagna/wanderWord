@@ -14,7 +14,7 @@
               alt="Cover"
               (click)="onEbookClicked(bookId)">
             </ion-img>
-            <ion-button fill="clear" (click)="confirmDeleteBook(bookId, bookcase)">
+            <ion-button (click)="confirmDeleteBook(bookId, bookcase)" class="delete-button">
               <ion-icon name="trash" color="danger"></ion-icon>
             </ion-button>
           </div>
@@ -26,7 +26,7 @@
           </ion-button>
         </div>
       </ion-label>
-      <ion-buttons>
+      <ion-buttons class="action-buttons">
         <ion-button (click)="presentActionSheet(bookcase)">
           <ion-icon name="ellipsis-vertical"></ion-icon>
         </ion-button>

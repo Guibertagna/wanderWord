@@ -1,0 +1,40 @@
+
+  .user-card{
+    background: #47465D;
+  }
+  
+  .card-content {
+    width: 80%;
+    max-width: 400px;
+    margin: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    
+  }
+  p{  color: #ffff; text-align: center;}
+  
+  .sem-user{
+    color: #ff0000;
+  }
+  .card-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  ion-button {
+    margin-top: 10px;
+    --background: #e74c3c;
+    --border-radius: 8px;
+  }
+  
+  .no-user-message {
+    font-size: 16px;
+    color: #ff0000;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+
+  

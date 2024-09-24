@@ -44,8 +44,20 @@
 
 .container-botton {
   margin-top: 20px;
-}
 
+}
+.cadastro{
+  background: #0e0047;
+  border-radius: 10px;
+}
 ion-button {
-  margin-top: 10px;
+  margin-top: 10px; 
+ 
+}
+.back-button-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10; /* Garante que o botão esteja no topo */
+  padding: 10px; /* Ajuste o espaçamento conforme necessário */
 }

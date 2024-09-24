@@ -1,32 +1,35 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Create Bookcase</ion-title>
+    <ion-title>Criar Estante</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/bookcase"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Create Bookcase</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="content-center">
+  <div class="intro-message">
+    <h2> Criação de estantes</h2>
+    <p>Aqui você pode criar sua própria estante personalizada e adicionar seus livros favoritos.</p>
+  </div>
+  
+  <form class="form-container" (submit)="createBookcase()">
+    <div class="container-form">
+      <ion-item class="rounded-border" no-lines>
+        <ion-label position="floating">Nome da Estante</ion-label>
+        <ion-input [(ngModel)]="bookcaseName" name="bookcaseName" required></ion-input>
+      </ion-item>
 
-  <form (submit)="createBookcase()">
-    <ion-item>
-      <ion-label position="floating">Bookcase Name</ion-label>
-      <ion-input [(ngModel)]="bookcaseName" name="bookcaseName" required label=""></ion-input>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label position="floating">Books</ion-label>
-      <ion-select [(ngModel)]="selectedBooks" name="selectedBooks" multiple="true">
-        <ion-select-option *ngFor="let book of books" [value]="book.docId">{{ book.title }}</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item class="rounded-border" no-lines>
+        <ion-label position="floating">Livros</ion-label>
+        <ion-select [(ngModel)]="selectedBooks" name="selectedBooks" multiple="true">
+          <ion-select-option *ngFor="let book of books" [value]="book.docId">{{ book.title }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
 
-    <ion-button expand="full" type="submit">Create Bookcase</ion-button>
+    <div class="container-button">
+      <ion-button class="cadastro" expand="full" type="submit">Criar Estante</ion-button>
+    </div>
   </form>
 </ion-content>

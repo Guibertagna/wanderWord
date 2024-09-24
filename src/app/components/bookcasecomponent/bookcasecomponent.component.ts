@@ -87,14 +87,7 @@ export class BookcasecomponentComponent implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Ações',
       buttons: [
-        {
-          text: 'Editar',
-          icon: 'create',
-          handler: () => {
-            console.log('Editar clicked', bookcase);
-            this.editBookcase(bookcase);
-          }
-        },
+        
         {
           text: 'Excluir',
           icon: 'trash',
